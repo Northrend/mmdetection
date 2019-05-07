@@ -77,6 +77,7 @@ def main():
         cfg.model, train_cfg=cfg.train_cfg, test_cfg=cfg.test_cfg)
 
     train_dataset = get_dataset(cfg.data.train)
+    logger.info('Image loaded: {}'.format(len(train_dataset)))
     train_detector(
         model,
         train_dataset,

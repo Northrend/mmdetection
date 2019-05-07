@@ -2,7 +2,7 @@
 model = dict(
     type='FasterRCNN',
     # pretrained='modelzoo://resnet50',
-    pretrained='/workspace/alpha/pretrained_models/pytorch/resnet-50.pth',
+    pretrained='/workspace/nd/pretrained_models/pytorch/resnet-50.pth',
     backbone=dict(
         type='ResNet',
         depth=50,
@@ -93,8 +93,8 @@ data_root = 'data/coco/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 data = dict(
-    imgs_per_gpu=2,
-    workers_per_gpu=2,
+    imgs_per_gpu=4,
+    workers_per_gpu=4,
     train=dict(
         type=dataset_type,
         ann_file=data_root + 'annotations/instances_train2017.json',
@@ -129,19 +129,19 @@ data = dict(
         with_label=False,
         test_mode=True))
 # optimizer
-optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 # learning policy
 lr_config = dict(
     policy='step',
     warmup='linear',
-    warmup_iters=500,
+    warmup_iters=1000,
     warmup_ratio=1.0 / 3,
     step=[8, 11])
 checkpoint_config = dict(interval=1)
 # yapf:disable
 log_config = dict(
-    interval=50,
+    interval=100,
     hooks=[
         dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook')
@@ -151,7 +151,7 @@ log_config = dict(
 total_epochs = 12
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/faster_rcnn_r50_fpn_1x'
+work_dir = '/workspace/nd/coco/model/f_R50_FPN_1x_20190201'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
